@@ -1,0 +1,32 @@
+@model Transaction
+
+<h1>Welcome @ViewBag.LoggedUser.FirstName</h1>
+<a asp-controller='Home' asp-action='Logout'>Logout</a>
+
+<h3>Balance: $@String.Format("{0:0.00}", ViewBag.Balance)</h3>
+
+<form asp-action="CreateTransaction" asp-controller="Home" method="post">
+    <input hidden asp-for="UserId" value="@ViewBag.LoggedUser.UserId">
+
+    <span asp-validation-for="Amount"></span><br>
+    <label asp-for="Amount"></label>
+    <input asp-for="Amount">
+
+    <input value="Deposit / Withdraw" type="submit"><br> 
+</form>
+
+@{
+    <table class="table table-striped">
+        <tr>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+        @foreach(var Transaction in @ViewBag.LoggedUser.CreatedTransactions)
+            {
+                <tr>
+                    <td>$@String.Format("{0:0.00}", Transaction.Amount)</td>
+                    <td>@Transaction.CreatedAt</td>
+                </tr>
+            }
+    </table>
+}
